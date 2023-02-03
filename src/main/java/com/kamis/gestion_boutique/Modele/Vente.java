@@ -1,5 +1,6 @@
 package com.kamis.gestion_boutique.Modele;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -7,6 +8,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.Set;
 
 @Entity
 @Data
@@ -18,15 +20,25 @@ public class Vente {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
 
     private int Id;
+    @Column(nullable = false)
     private String Designation_Vente;
+    @Column(nullable = false)
     private int Quantite_Vente;
 
     @DateTimeFormat(pattern = "yyyy/MM/dd")
     private LocalDate Date_Vente;
 
-    /*@ManyToMany
-    @JoinColumn(name = "articleId", insertable = false, updatable = false)
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 
-    private Article article;
-    private int articleId;*/
+    @JoinTable(name = "Facture",
+
+            joinColumns = {
+                    @JoinColumn(name = "vente_id", referencedColumnName = "id")
+            },
+            inverseJoinColumns = {
+                    @JoinColumn(name = "article_id", referencedColumnName = "id")
+            }
+    )
+    @JsonManagedReference
+    private Set<Article> articles;
 }

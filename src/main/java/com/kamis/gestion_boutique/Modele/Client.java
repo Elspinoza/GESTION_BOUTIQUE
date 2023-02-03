@@ -10,15 +10,19 @@ import javax.persistence.*;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Client {
+public class Client extends User{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
 
     private int id;
+    @Column(nullable = false)
     private String nom;
+    @Column(nullable = false)
     private String prenom;
+    @Column(nullable = false)
     private String adresse;
+  /*  @Column(nullable = false)
     private String telephone;
-
+*/
 }
